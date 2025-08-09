@@ -52,5 +52,9 @@ server/
 │   └── index.js         # Entry point
 └── package.json
 
+```
 
+## Testing
 
+- Postman collection provided
+     ExamAPI_Cookies.postman_collection.json
