@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 import { 
@@ -7,8 +7,16 @@ import {
   Plus, 
   LogOut, 
 } from 'lucide-react';
+import { AuthContext } from '@/context/AuthContext';  
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = ({ isCollapsed, onToggle }) => {
+  const {logout} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleSignOut = async () => {
+    await logout;
+    navigate('/')
+  } 
   return (
     <div className={`${isCollapsed ? 'w-16' : 'w-64'} bg-background border-r transition-all duration-300 ease-in-out flex flex-col`}>
       
@@ -53,6 +61,7 @@ const Sidebar = ({ isCollapsed, onToggle }) => {
           variant="ghost"
           className="w-full justify-start gap-3 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
           size={isCollapsed ? "sm" : "default"}
+          onClick={handleSignOut}
         >
           <LogOut className="h-4 w-4 flex-shrink-0" />
           {!isCollapsed && <span>Sign Out</span>}

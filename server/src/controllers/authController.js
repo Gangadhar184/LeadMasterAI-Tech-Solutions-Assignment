@@ -20,7 +20,20 @@ const signUp = async (req, res) => {
         })
 
         await user.save();
-        res.status(400).json({ message: "User registered successfully" });
+        // Create JWT token
+        const token = await user.getJWT();
+
+        // Set cookie with token
+        res.cookie("token", token, {
+            httpOnly: true,
+            expires: new Date(Date.now() + 8 * 3600000) // 8 hours
+        });
+        const userResponse = {
+            _id: user._id,
+            userName: user.userName,
+            email: user.email,
+        };
+        res.status(201).json({ message: "User registered successfully", user: userResponse });
 
 
     } catch (error) {
@@ -49,9 +62,9 @@ const logIn = async (req, res) => {
             const token = await user.getJWT();
 
             //add token to cookie
-            res.cookie("token", token, {  expires: new Date(Date.now() + 8 * 3600000) })
+            res.cookie("token", token, { httpOnly: true, expires: new Date(Date.now() + 8 * 3600000) })
 
-            res.status(200).json({ message: "Login successful", token });
+            res.status(200).json({ message: "Login successful",  user: { _id: user._id, userName: user.userName, email: user.email } });
         } else {
             throw new Error("Invalid Credentials")
         }

@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Signup from "./Signup";
 import Quiz from "./Quiz";
 import ResultPage from "./ResultPage";
+import PrivateRoute from "./PrivateRoute";
 
 
 const Body = () => {
@@ -12,11 +13,23 @@ const Body = () => {
         },
         {
             path: '/quiz',
-            element: <Quiz/>
+            
+            element:
+            (
+                <PrivateRoute>
+                         <Quiz/>
+                </PrivateRoute>
+           
+            )
         },
         {
             path: '/result',
-            element: <ResultPage/>
+            element: (
+                <PrivateRoute>
+                         <ResultPage/>
+                </PrivateRoute>
+           )
+
         }
     ])
 

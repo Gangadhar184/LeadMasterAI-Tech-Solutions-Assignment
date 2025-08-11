@@ -6,4 +6,4 @@ const ResultPage = () => {
   )
 }
 
-export default ResultPage
+export default ResultPage;
