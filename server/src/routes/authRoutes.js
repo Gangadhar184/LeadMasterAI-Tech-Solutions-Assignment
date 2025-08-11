@@ -10,7 +10,13 @@ authRouter.post("/logout", logOut);
 
 //get current logged in user
 authRouter.get("/me", userAuth, (req, res) => {
-  res.status(200).json({ user: req.user });
+  res.status(200).json({
+    user: {
+      _id: req.user._id,
+      userName: req.user.userName,
+      email: req.user.email
+    }
+  });
 });
 
 module.exports = authRouter;

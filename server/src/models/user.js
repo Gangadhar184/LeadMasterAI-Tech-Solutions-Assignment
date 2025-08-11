@@ -50,6 +50,12 @@ userSchema.methods.validatePassword = async function (passwordByUser) {
     const isPasswordValid = await bcrypt.compare(passwordByUser, passwordHash);
     return isPasswordValid;
 }
+userSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.password;   // remove password field from the output JSON
+    return ret;
+  }
+});
 
 
 const User = mongoose.model("User", userSchema);
