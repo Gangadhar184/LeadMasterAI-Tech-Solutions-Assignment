@@ -1,0 +1,65 @@
+import React from 'react'
+import { Button } from './ui/button';
+import { Separator } from './ui/separator';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Plus, 
+  LogOut, 
+} from 'lucide-react';
+
+const Sidebar = ({ isCollapsed, onToggle }) => {
+  return (
+    <div className={`${isCollapsed ? 'w-16' : 'w-64'} bg-background border-r transition-all duration-300 ease-in-out flex flex-col`}>
+      
+      {/* Header with toggle button */}
+      <div className="flex items-center justify-between p-4">
+        {!isCollapsed && (
+          <h1 className="text-lg font-semibold">Quiz App</h1>
+        )}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onToggle}
+          className="h-8 w-8 p-0"
+        >
+          {isCollapsed ? (
+            <ChevronRight className="h-4 w-4  cursor-pointer " />
+          ) : (
+            <ChevronLeft className="h-4 w-4  cursor-pointer " />
+          )}
+        </Button>
+      </div>
+
+      <Separator />
+
+      {/* Middle Section */}
+      <div className="p-4">
+        <Button
+          className="w-full justify-start gap-3 cursor-pointer"
+          size={isCollapsed ? "sm" : "default"}
+        >
+          <Plus className="h-4 w-4 flex-shrink-0" />
+          {!isCollapsed && <span>New Quiz</span>}
+        </Button>
+      </div>
+
+      <Separator />
+
+
+      {/* Sign Out Button */}
+      <div className="p-4">
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+          size={isCollapsed ? "sm" : "default"}
+        >
+          <LogOut className="h-4 w-4 flex-shrink-0" />
+          {!isCollapsed && <span>Sign Out</span>}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default Sidebar;
