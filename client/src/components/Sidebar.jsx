@@ -8,15 +8,19 @@ import {
   LogOut, 
 } from 'lucide-react';
 import { AuthContext } from '@/context/AuthContext';  
+import { QuizContext } from '@/context/QuizContext';
 import { useNavigate } from 'react-router-dom';
 
 const Sidebar = ({ isCollapsed, onToggle }) => {
   const {logout} = useContext(AuthContext);
+  const { quizzes, addQuiz, selectedQuizId, selectQuiz } = useContext(QuizContext);
   const navigate = useNavigate();
+
   const handleSignOut = async () => {
     await logout;
     navigate('/')
   } 
+
   return (
     <div className={`${isCollapsed ? 'w-16' : 'w-64'} bg-background border-r transition-all duration-300 ease-in-out flex flex-col`}>
       
@@ -46,10 +50,25 @@ const Sidebar = ({ isCollapsed, onToggle }) => {
         <Button
           className="w-full justify-start gap-3 cursor-pointer"
           size={isCollapsed ? "sm" : "default"}
+          onClick={addQuiz}
         >
           <Plus className="h-4 w-4 flex-shrink-0" />
           {!isCollapsed && <span>New Quiz</span>}
         </Button>
+      </div>
+
+      {/* Display quiz like quiz 1 or its topic */}
+          <div className="flex-1 overflow-y-auto px-2">
+        {quizzes.map((quiz) => (
+          <Button
+            key={quiz.id}
+            variant={quiz.id === selectedQuizId ? "secondary" : "ghost"}
+            className="w-full justify-start mb-1"
+            onClick={() => selectQuiz(quiz.id)}
+          >
+            {!isCollapsed && quiz.title}
+          </Button>
+        ))}
       </div>
 
       <Separator />
