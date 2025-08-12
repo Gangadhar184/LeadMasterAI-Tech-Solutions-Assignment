@@ -4,15 +4,16 @@
 It supports secure JWT-based authentication, dynamic quiz rendering, navigation, timer functionality, and score calculation.
 
 ## Features
+
 - User Authentication
 
-   - Signup, Login, Logout   with JWT authentication
+  - Signup, Login, Logout   with JWT authentication
 
-    - Auth state management using AuthContext
+  - Auth state management using AuthContext
 
 - Quiz Interface
 
-    - Start Exam with randomized questions fetched from backend
+  - Start Exam with randomized questions fetched from backend
 
   - MCQ display with selectable options
 
@@ -20,14 +21,13 @@ It supports secure JWT-based authentication, dynamic quiz rendering, navigation,
 
 - Exam Timer
 
-  - 10-minute countdown 
+  - 10-minute countdown
 
   - Auto-submit when time runs out
 
 - Results
 
   - Score calculation and result display
-
 
 ```bash
 src/
@@ -78,4 +78,3 @@ npm run dev
 - Submit Exam → Score calculated and sent to backend
 
 - ResultPage displays score
-
