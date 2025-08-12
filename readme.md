@@ -17,8 +17,12 @@ It features secure JWT authentication, timed quizzes, score calculation, and a c
 
 ```
 
-- Client README: client/README.md – Details on the frontend setup & usage
-- Server README: server/README.md – Details on the backend setup & usage
+- [client/README.md](client/README.md)  
+- [server/README.md](server/README.md)  
+
+## Postman collection to Test the backend 
+
+**Postman API Collection:** [ExamAPI_Cookies.postman_collection.json](server/ExamAPI_Cookies.postman_collection.json)
 
 ## Features
 
