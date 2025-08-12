@@ -1,13 +1,16 @@
 import React from 'react'
 import Body from './components/Body'
 import { QuizProvider } from './context/QuizContext';
+import { AuthProvider } from './context/AuthContext'
 
 const App = () => {
   return (
     <>
-    <QuizProvider>
-    <Body/>
-    </QuizProvider>
+   <AuthProvider>
+      <QuizProvider>
+        <Body />
+      </QuizProvider>
+    </AuthProvider>
       
     </>
   )

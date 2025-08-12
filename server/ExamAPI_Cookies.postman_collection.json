@@ -1,143 +1,84 @@
 {
   "info": {
-    "name": "Exam API (Cookie Auth) - Automated Submission",
-    "_postman_id": "f89e1a18-4c7f-4fd9-bd52-2f08bbca56a7",
-    "description": "MERN Exam API using cookies for authentication. Automatically saves all questionIds and random answers from GET /questions for use in POST /submit.",
+    "name": "Quiz API Collection",
+    "_postman_id": "a3c7f8f2-b6b2-4d44-bc21-quiz-api",
+    "description": "Postman collection for testing Quiz API with Auth and Exam routes.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "1. Login (Save Cookie)",
+      "name": "Auth - Sign Up",
       "request": {
         "method": "POST",
         "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
+          { "key": "Content-Type", "value": "application/json" }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"123456\"\n}"
+          "raw": "{\n    \"userName\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
         },
-        "url": {
-          "raw": "http://localhost:7777/api/auth/login",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "7777",
-          "path": ["api", "auth", "login"]
-        }
-      },
-      "response": []
+        "url": { "raw": "http://localhost:7777/api/auth/signup", "protocol": "http", "host": ["localhost"], "port": "7777", "path": ["api", "auth", "signup"] }
+      }
     },
     {
-      "name": "2. Get Exam Questions (Auto Save Random Answers)",
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+        },
+        "url": { "raw": "http://localhost:7777/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "7777", "path": ["api", "auth", "login"] }
+      }
+    },
+    {
+      "name": "Auth - Logout",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": { "raw": "http://localhost:7777/api/auth/logout", "protocol": "http", "host": ["localhost"], "port": "7777", "path": ["api", "auth", "logout"] }
+      }
+    },
+    {
+      "name": "Exam - Start Exam",
       "request": {
         "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:7777/api/exam/questions",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "7777",
-          "path": ["api", "exam", "questions"]
-        }
-      },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "// Check if response is successful",
-              "if (pm.response.code === 200) {",
-              "    let data = pm.response.json();",
-              "    ",
-              "    // Handle both possible response structures",
-              "    let questions = data.questions || data;",
-              "    ",
-              "    if (questions && Array.isArray(questions) && questions.length > 0) {",
-              "        let answersArray = questions.map(q => {",
-              "            // Generate random index for answer selection",
-              "            let randomIndex = Math.floor(Math.random() * q.options.length);",
-              "            return {",
-              "                questionId: q._id || q.id, // Handle both _id and id",
-              "                selectedAnswer: q.options[randomIndex]",
-              "            };",
-              "        });",
-              "        ",
-              "        // Save the complete structure that your backend expects",
-              "        let submitPayload = { userAnswers: answersArray };",
-              "        pm.environment.set(\"answersArray\", JSON.stringify(submitPayload));",
-              "        ",
-              "        console.log(` Saved ${answersArray.length} random answers to environment`);",
-              "        console.log('Sample answer:', answersArray[0]);",
-              "    } else {",
-              "        console.error(\" No questions array found in response\");",
-              "        console.log('Response structure:', JSON.stringify(data, null, 2));",
-              "    }",
-              "} else {",
-              "    console.error(` Request failed with status: ${pm.response.code}`);",
-              "    console.log('Response:', pm.response.text());",
-              "}"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://localhost:7777/api/exam/questions?quizId=quiz123", "protocol": "http", "host": ["localhost"], "port": "7777", "path": ["api", "exam", "questions"], "query": [{ "key": "quizId", "value": "quiz123" }] }
+      }
     },
     {
-      "name": "3. Submit Exam (Auto from Saved Answers)",
+      "name": "Exam - Save Progress",
       "request": {
         "method": "POST",
         "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
+          { "key": "Content-Type", "value": "application/json" }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{{{answersArray}}}"
+          "raw": "{\n    \"quizId\": \"quiz123\",\n    \"currentIndex\": 2,\n    \"selectedAnswers\": {\n        \"questionId1\": \"Answer A\"\n    },\n    \"timeLeft\": 480\n}"
         },
-        "url": {
-          "raw": "http://localhost:7777/api/exam/submit",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "7777",
-          "path": ["api", "exam", "submit"]
-        }
-      },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "// Display the exam results",
-              "if (pm.response.code === 200) {",
-              "    let result = pm.response.json();",
-              "    console.log(' EXAM SUBMITTED SUCCESSFULLY!');",
-              "    console.log(` Score: ${result.score || 'N/A'}`);",
-              "    console.log(` Correct: ${result.correctAnswers || 'N/A'}`);",
-              "    console.log(` Wrong: ${result.wrongAnswers || 'N/A'}`);",
-              "    console.log(`Total Questions: ${result.totalQuestions || 'N/A'}`);",
-              "} else {",
-              "    console.error(`❌ Submission failed: ${pm.response.code}`);",
-              "    console.log('Error:', pm.response.text());",
-              "}"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
-    }
-  ],
-  "variable": [
+        "url": { "raw": "http://localhost:7777/api/exam/save-progress", "protocol": "http", "host": ["localhost"], "port": "7777", "path": ["api", "exam", "save-progress"] }
+      }
+    },
     {
-      "key": "baseUrl",
-      "value": "http://localhost:7777",
-      "type": "string"
+      "name": "Exam - Submit Exam",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"quizId\": \"quiz123\",\n    \"userAnswers\": [\n        {\n            \"questionId\": \"64b2b47b1f1a2a5d12345678\",\n            \"selectedAnswer\": \"Answer A\"\n        },\n        {\n            \"questionId\": \"64b2b47b1f1a2a5d87654321\",\n            \"selectedAnswer\": \"Answer C\"\n        }\n    ]\n}"
+        },
+        "url": { "raw": "http://localhost:7777/api/exam/submit", "protocol": "http", "host": ["localhost"], "port": "7777", "path": ["api", "exam", "submit"] }
+      }
     }
   ]
 }

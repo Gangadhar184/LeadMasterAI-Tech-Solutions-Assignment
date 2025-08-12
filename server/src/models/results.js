@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 
-// 
+// Answer schema for individual question results
 const answerSchema = new mongoose.Schema({
     questionId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question', // Reference to the Question model
+        ref: 'Question',
         required: true,
+    },
+    questionText: {
+        type: String,
+        required: false // Store question text for reference
     },
     selectedAnswer: {
         type: String,
@@ -21,25 +25,29 @@ const answerSchema = new mongoose.Schema({
     }
 });
 
-// The main schema for an exam result.
+// The main schema for an exam result
 const resultSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to your User model
-        required: true,
+    user: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User', 
+        // required: false // Made optional to support guest users
+    },
+    quizId: {
+        type: String, // Store reference to the frontend quiz ID
+        required: false
     },
     score: {
         type: Number,
-        required: true,
+        required: true
     },
     totalQuestions: {
         type: Number,
-        required: true,
+        required: true
     },
-    results: [answerSchema], // array of the answers provided
-    submittedAt: {
-        type: Date,
-        default: Date.now,
+    results: [answerSchema],
+    submittedAt: { 
+        type: Date, 
+        default: Date.now 
     }
 });
 

@@ -12,13 +12,14 @@ const Quiz = () => {
   }
 
   return (
-    <>
-     <div>
+    <div className='flex '>
+    
       <Sidebar isCollapsed={isCollapsed} onToggle={toggleSidebar}  />
-    </div>
+  
     <Outlet/>
+  
     <MainContent/>
-    </>
+    </div>
    
   )
 }
