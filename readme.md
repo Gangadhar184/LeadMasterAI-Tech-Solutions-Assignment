@@ -73,9 +73,10 @@ bcrypt for password hashing
 
     cd client and npm run dev
 ```
+    
+```markdown
+## 🔗 Subproject Links
 
-## Subproject Links
-
-Frontend README: client/README.md
-
-Backend README: server/README.md
+-  [Frontend README](client/README.md)
+-  [Backend README](server/README.md)
+```
